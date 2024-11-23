@@ -283,6 +283,7 @@ pub(crate) struct SliceTransformPy(SliceTransformType);
 pub enum SliceTransformType {
     Fixed(size_t),
     MaxLen(usize),
+    Capped(usize),
     Noop,
 }
 
@@ -520,6 +521,7 @@ impl OptionsPy {
     ) -> PyResult<()> {
         let transform = match slice_transform_type {
             SliceTransformType::Fixed(len) => SliceTransform::create_fixed_prefix(*len),
+            SliceTransformType::Capped(len) => SliceTransform::create_capped_prefix(*len),
             SliceTransformType::MaxLen(len) => match create_max_len_transform(*len) {
                 Ok(f) => f,
                 Err(_) => {
@@ -936,6 +938,7 @@ impl OptionsPy {
     pub fn set_prefix_extractor(&mut self, prefix_extractor: &SliceTransformPy) -> PyResult<()> {
         let transform = match &prefix_extractor.0 {
             SliceTransformType::Fixed(len) => SliceTransform::create_fixed_prefix(*len),
+            SliceTransformType::Capped(len) => SliceTransform::create_capped_prefix(*len),
             SliceTransformType::MaxLen(len) => match create_max_len_transform(*len) {
                 Ok(f) => f,
                 Err(_) => {
@@ -2729,6 +2732,10 @@ impl SliceTransformPy {
         SliceTransformPy(SliceTransformType::Fixed(len))
     }
 
+    #[staticmethod]
+    pub fn create_capped_prefix(len: size_t) -> Self {
+        SliceTransformPy(SliceTransformType::Capped(len))
+    }
     ///
     /// prefix max length at `len`. If key is longer than `len`,
     /// the prefix will have length `len`, if key is shorter than `len`,
