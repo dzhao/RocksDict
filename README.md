@@ -19,7 +19,7 @@ Wheels available for macOS amd64/arm64, linux amd64/arm64, and windows amd64.
 This library has two purposes.
 
 1. As an on-disk key-value storage solution for Python.
-2. As a RocksDB / Speedict interface. 
+2. As a RocksDB / Speedict interface.
 
 These two purposes operate in different modes:
 
