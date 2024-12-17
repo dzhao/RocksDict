@@ -64,7 +64,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [x86_64]
+        target: [x86_64, aarch64]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -107,7 +107,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [x86_64]
+        target: [x86_64, aarch64]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -149,7 +149,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [x86_64]
+        target: [x86_64, aarch64]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -211,14 +211,14 @@ jobs:
       - name: Create wheels archive
         run: |
           cd dist
-          tar czf ../wheels.tar.gz *
+          tar czf ../myrocksdict.tar.gz *
       - name: Upload wheels archive
         uses: actions/upload-artifact@v4
         with:
           name: wheels-archive
-          path: wheels.tar.gz
+          path: myrocksdict.tar.gz
       - name: Upload to release
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v1
         with:
-          files: wheels.tar.gz
+          files: myrocksdict.tar.gz
